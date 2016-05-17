@@ -19,26 +19,26 @@ public class PlayerController : MonoBehaviour {
         restingX = transform.position.x;
 	}
 
-    void Update()
+    /*void Update()
     {
         float movementVertical = Input.GetAxis("Vertical");
 
         Vector2 movement = new Vector2(0, movementVertical);
 
         transform.Translate(movement * speed * Time.deltaTime);
-    }
+    }*/
 
-    /*void FixedUpdate()
+    void FixedUpdate()
     {
         float movementVertical = Input.GetAxis("Vertical");
-        float movementPush = CheckPush();
+        //float movementPush = CheckPush();
 
-        Vector2 movement = new Vector2(movementPush, movementVertical);
+        Vector2 movement = new Vector2(0, movementVertical);
 
         rb2d.AddForce(movement * speed * Time.deltaTime);
     }
 
-    void Update()
+    /*void Update()
     {
         if (transform.position.x > maxX)
         {
