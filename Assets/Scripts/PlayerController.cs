@@ -19,21 +19,14 @@ public class PlayerController : MonoBehaviour {
         restingX = transform.position.x;
 	}
 
-    /*void Update()
-    {
-        float movementVertical = Input.GetAxis("Vertical");
-
-        Vector2 movement = new Vector2(0, movementVertical);
-
-        transform.Translate(movement * speed * Time.deltaTime);
-    }*/
-
     void FixedUpdate()
     {
         float movementVertical = Input.GetAxis("Vertical");
-        //float movementPush = CheckPush();
+        float movementPush = Input.GetAxis("Horizontal");
 
-        Vector2 movement = new Vector2(0, movementVertical);
+        //if (movementVertical == 0 ) { rb2d.get}
+
+        Vector2 movement = new Vector2(movementPush, movementVertical);
 
         rb2d.AddForce(movement * speed * Time.deltaTime);
     }
@@ -48,7 +41,7 @@ public class PlayerController : MonoBehaviour {
         { 
             transform.position.Set(restingX, transform.position.y, transform.position.z);
         }
-    }*/
+    }
 
     float CheckPush()
     {
@@ -70,6 +63,6 @@ public class PlayerController : MonoBehaviour {
             pushing = false;
             return jolt * -1;
         }
-    }
+    }*/
 
 }
