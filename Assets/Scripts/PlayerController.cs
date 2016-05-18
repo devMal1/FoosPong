@@ -7,16 +7,16 @@ public class PlayerController : MonoBehaviour {
     public float jolt;
 
     private Rigidbody2D rb2d;
-    private bool pushing;
-    public float maxX;
-    private float restingX;
+    //private bool pushing;
+    //public float maxX;
+    //private float restingX;
 
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
-        pushing = false;
+        //pushing = false;
         //maxX = 10f;
-        restingX = transform.position.x;
+        //restingX = transform.position.x;
 	}
 
     void FixedUpdate()
