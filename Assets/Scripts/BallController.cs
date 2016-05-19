@@ -30,18 +30,18 @@ public class BallController : MonoBehaviour {
         if (start) {
             rb2d.AddForce(new Vector2(initXDirection, 0) * initSpeed);
             start = false;
+        } else if (rb2d.IsSleeping())
+        {
+            rb2d.WakeUp();
+            rb2d.AddForce(new Vector2(-1, 0) * 100 * Time.deltaTime);
         }
-        
-    }
 
-	// Update is called once per frame
-	void Update () {
-        
-	}
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         GameObject otherObject = other.gameObject;
+        bool isGoal = true;
 
         if (otherObject.CompareTag("RightGoal"))
         {
@@ -51,7 +51,9 @@ public class BallController : MonoBehaviour {
         {
             rightScore++;
             UpdateScore(SCORE.right);
-        }
+        } else { isGoal = false; }
+
+        if (isGoal) { reset(); }
     }
 
     void UpdateScore(SCORE score)
@@ -68,6 +70,12 @@ public class BallController : MonoBehaviour {
             rightScoreUI.text = rightScore.ToString();
             leftScoreUI.text = leftScore.ToString();
         }
+    }
+
+    void reset()
+    {
+        rb2d.Sleep();
+        rb2d.position = new Vector2(0, 0);
     }
 
 }
