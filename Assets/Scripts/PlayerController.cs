@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
     public float speed;
-    public float jolt;
+    //public float jolt;
 
     private Rigidbody2D rb2d;
     //private bool pushing;
