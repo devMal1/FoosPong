@@ -4,6 +4,8 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
     public float speed;
+    public GameObject leftConstraint;
+    public GameObject rightConstraint;
 
     private Rigidbody2D rb2d;
 
@@ -17,9 +19,19 @@ public class PlayerController : MonoBehaviour {
         float movementVertical = Input.GetAxis("Vertical");
         float movementPush = Input.GetAxis("Horizontal");
 
-        Vector2 movement = new Vector2(movementPush, movementVertical);
+        if (rb2d.IsTouching(leftConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush < 0 ? 0 : movementPush; }
+        if (rb2d.IsTouching(rightConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush > 0 ? 0 : movementPush; }
 
-        rb2d.AddForce(movement * speed * Time.deltaTime);
+        if (movementVertical == 0 && movementPush == 0) { rb2d.Sleep(); }
+        else
+        {
+            rb2d.WakeUp();
+
+            Vector2 movement = new Vector2(movementPush, movementVertical);
+
+            rb2d.AddForce(movement * speed * Time.deltaTime);
+        }
+
     }
 
 }
