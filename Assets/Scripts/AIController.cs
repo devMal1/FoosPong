@@ -23,11 +23,11 @@ public class AIController : MonoBehaviour {
     void FixedUpdate()
     {
         if (collidedWithWall()) { movementVertical *= -1; }
-
-        if (collidedWithBall()) {
+        else if (collidedWithBall()) {
             Vector2 force = new Vector2(rb2d.mass * speed, 0);
-            ball.GetComponent<Rigidbody2D>().AddForce(force * Time.deltaTime);
-        }
+            ball_rb2d.AddForce(force * Time.deltaTime);
+            movementVertical *= -1;
+        } else { movementVertical = movementVertical + 0; }
 
         Vector2 movement = new Vector2(0, movementVertical);
 
@@ -53,12 +53,5 @@ public class AIController : MonoBehaviour {
 
         return ((ball_rb2d.position.x + tol) == rb2d.position.x || (ball_rb2d.position.x - tol) == rb2d.position.x) ? true : false;
     }
-
-    /*void OnTriggerEnter2D(Collider2D other)
-    {
-        GameObject otherObject = other.gameObject;
-
-        if (otherObject.CompareTag("Wall")) { movementVertical *= -1; }
-    }*/
 
 }
