@@ -85,4 +85,25 @@ public class BallController : MonoBehaviour {
         rb2d.position = new Vector2(0, 0);
     }
 
+
+
+
+    private class GameSystem
+    {
+        public static GameObject[] gameObjects { get; set; }
+
+        public static void gameWon()
+        {
+            deactivate();
+        }
+
+        private static void deactivate()
+        {
+            foreach (GameObject go in gameObjects)
+            {
+                go.SetActive(false);
+            }
+        }
+    }
+
 }
