@@ -44,6 +44,7 @@ public class AIController : MonoBehaviour {
 
     bool collidedWithWall()
     {
+        //NOT WORKING... gonna have to try something else
         return rb2d.IsTouchingLayers(walls.layer) ? true : false;
     }
 
