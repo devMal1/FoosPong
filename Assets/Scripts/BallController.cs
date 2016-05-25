@@ -36,7 +36,7 @@ public class BallController : MonoBehaviour {
         } else if (rb2d.IsSleeping())
         {
             rb2d.WakeUp();
-            rb2d.AddForce(new Vector2(-1, 0) * 100 * Time.deltaTime);
+            rb2d.AddForce(new Vector2(initXDirection, 0) * initSpeed);
         } else if (bounceOffWall())
         {
             //TODO: add to bounce off wall
@@ -81,11 +81,10 @@ public class BallController : MonoBehaviour {
 
     bool bounceOffWall()
     {
-        //complete and test!!
         foreach (BoxCollider2D wall in walls)
         {
             if (rb2d.IsTouching(wall)) {
-                 //.... do stuff
+                return true;
             }
         }
         return false;

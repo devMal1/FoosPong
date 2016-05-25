@@ -30,8 +30,8 @@ public class AIController : MonoBehaviour {
         if (collidedWithWall()) {
             movementVertical *= -1;
         } else if (rb2d.IsTouching(ball_rb2d.GetComponent<CircleCollider2D>()) && !delaying) {
-            Vector2 force = new Vector2(rb2d.mass * speed, 0);
-            ball_rb2d.AddForce(force * Time.deltaTime);
+            Vector2 force = new Vector2(12 * -1, 0);
+            ball_rb2d.AddForce(force);
             movementVertical *= -1;
             delay(2);
         } else { movementVertical = movementVertical + 0; }
