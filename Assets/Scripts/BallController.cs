@@ -8,10 +8,10 @@ public class BallController : MonoBehaviour {
     public int initXDirection;
     public Text leftScoreUI;
     public Text rightScoreUI;
-    public GameObject walls;
+    public GameObject walls_dir;
 
     private Rigidbody2D rb2d;
-    private GameObject[] walls_go;
+    private BoxCollider2D[] walls;
     private bool start;
     private int leftScore;
     private int rightScore;
@@ -20,7 +20,7 @@ public class BallController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
-        walls_go = walls.GetComponentsInChildren<GameObject>();
+        walls = walls_dir.GetComponentsInChildren<BoxCollider2D>();
         start = true;
         leftScore = 0;
         rightScore = 0;
@@ -79,16 +79,16 @@ public class BallController : MonoBehaviour {
         }
     }
 
-    void bouncOffWall()
+    bool bounceOffWall()
     {
         //complete and test!!
-        foreach (GameObject go in walls_go)
+        foreach (BoxCollider2D wall in walls)
         {
-            if (rb2d.IsTouching(go.GetComponent<BoxCollider2D>()) {
-                //.... do stuff
+            if (rb2d.IsTouching(wall)) {
+                 //.... do stuff
             }
         }
-        
+        return false;
     }
 
     void reset()

@@ -4,12 +4,12 @@ using System.Collections;
 public class AIController : MonoBehaviour {
 
     public GameObject ball;
-    public GameObject walls;
+    public GameObject walls_dir;
     public float speed;
 
     private Rigidbody2D rb2d;
     private Rigidbody2D ball_rb2d;
-    //private BoxCollider2D walls_box;
+    private BoxCollider2D[] walls;
     private int movementVertical;
     private float? startDelay;
     private bool delaying;
@@ -19,7 +19,7 @@ public class AIController : MonoBehaviour {
     {
         rb2d = GetComponent<Rigidbody2D>();
         ball_rb2d = ball.GetComponent<Rigidbody2D>();
-        //walls_box = walls.GetComponent<BoxCollider2D>();
+        walls = walls_dir.GetComponentsInChildren<BoxCollider2D>();
         movementVertical = 1;
         startDelay = null;
         delaying = false;
@@ -28,7 +28,6 @@ public class AIController : MonoBehaviour {
     void FixedUpdate()
     {
         if (collidedWithWall()) {
-            print("inside wall collide");
             movementVertical *= -1;
         } else if (rb2d.IsTouching(ball_rb2d.GetComponent<CircleCollider2D>()) && !delaying) {
             Vector2 force = new Vector2(rb2d.mass * speed, 0);
@@ -44,8 +43,12 @@ public class AIController : MonoBehaviour {
 
     bool collidedWithWall()
     {
-        //NOT WORKING... gonna have to try something else
-        return rb2d.IsTouchingLayers(walls.layer) ? true : false;
+        foreach (BoxCollider2D wall in walls)
+        {
+            if (rb2d.IsTouching(wall)) { return true; }
+        }
+
+        return false;
     }
 
     void delay(float seconds)
