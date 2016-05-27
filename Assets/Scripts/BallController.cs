@@ -16,9 +16,10 @@ public class BallController : MonoBehaviour {
     private int leftScore;
     private int rightScore;
     private enum SCORE { right, left, both };
+    private float prevY;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         walls = walls_dir.GetComponentsInChildren<BoxCollider2D>();
         start = true;
@@ -40,8 +41,16 @@ public class BallController : MonoBehaviour {
         } else if (bounceOffWall())
         {
             //TODO: add to bounce off wall
+            int prevDir = (int) (prevY / Mathf.Abs(prevY));
+            float currentY = rb2d.position.y;
+            if (prevY < currentY && prevDir > 0)
+            {
+                //... do somethingssssss
+            }
             
         }
+
+        prevY = rb2d.position.y;
 
     }
 
