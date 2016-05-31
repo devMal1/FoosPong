@@ -41,6 +41,8 @@ public class GameController : MonoBehaviour {
                 gameOver.SetActive(false);
             }
             //TODO: add some UX animation jazz
+        } else if (restartScene()) {
+            resetGameObjects();
         }
 	}
 
@@ -75,5 +77,12 @@ public class GameController : MonoBehaviour {
         {
             return rightScoreUI.text.Equals(points2Win_string) ? true : false;
         } else { return false; }
+    }
+
+    bool restartScene()
+    {
+        float restart_btn = Input.GetAxis("Restart");
+        int restart = Mathf.CeilToInt(restart_btn);
+        return restart > 0 ? true : false;
     }
 }
