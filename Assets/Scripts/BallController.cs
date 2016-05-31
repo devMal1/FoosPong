@@ -15,8 +15,10 @@ public class BallController : MonoBehaviour {
     private bool start;
     private int leftScore;
     private int rightScore;
-    private enum SCORE { right, left, both };
-    private float prevY;
+    private enum SCORE { right, left, both }
+    private Vector2 prevVel;
+    private Vector2 prevDir;
+    private string whichWall;
 
     // Use this for initialization
     void Start () {
@@ -26,6 +28,7 @@ public class BallController : MonoBehaviour {
         leftScore = 0;
         rightScore = 0;
         UpdateScore(SCORE.both);
+        whichWall = null;
     }
 	
 
@@ -40,17 +43,35 @@ public class BallController : MonoBehaviour {
             rb2d.AddForce(new Vector2(initXDirection, 0) * initSpeed);
         } else if (bounceOffWall())
         {
-            //TODO: add to bounce off wall
-            int prevDir = (int) (prevY / Mathf.Abs(prevY));
-            float currentY = rb2d.position.y;
-            if (prevY < currentY && prevDir > 0)
+            int dirX = (int)prevDir.x;
+            int dirY = (int)prevDir.y;
+            switch (whichWall)
             {
-                //... do somethingssssss
+                case "TopWall":
+                    dirY = -1;
+                    break;
+                case "BotWall":
+                    dirY = 1;
+                    break;
+                case "RightWall":
+                    dirX = -1;
+                    break;
+                case "LeftWall":
+                    dirX = 1;
+                    break;
+                default:
+                    dirY = 0;
+                    dirX = 0;
+                    break;
             }
-            
+
+            rb2d.Sleep();
+            rb2d.AddForce(new Vector2(30 * dirX, 30 * dirY));
+
         }
 
-        prevY = rb2d.position.y;
+        prevVel = rb2d.velocity;
+        prevDir = new Vector2(getDir(prevVel.x), getDir(prevVel.y));
 
     }
 
@@ -93,10 +114,17 @@ public class BallController : MonoBehaviour {
         foreach (BoxCollider2D wall in walls)
         {
             if (rb2d.IsTouching(wall)) {
+                whichWall = wall.tag.ToString();
                 return true;
             }
         }
+        whichWall = null;
         return false;
+    }
+
+    int getDir(float vel)
+    {
+        return (int)(vel / Mathf.Abs(vel == 0 ? 0 : vel));
     }
 
     void reset()
