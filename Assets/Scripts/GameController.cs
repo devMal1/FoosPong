@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
     public GameObject p_paddle;
     public GameObject ai_paddle;
     public GameObject ball;
+    public GameObject gameOver;
     public Text leftScoreUI;
     public Text rightScoreUI;
     public int points2Win;
@@ -20,6 +21,7 @@ public class GameController : MonoBehaviour {
     void Start () {
         populate();
         points2Win_string = points2Win.ToString();
+        gameOver.SetActive(false);
 
 	}
 	
@@ -27,8 +29,18 @@ public class GameController : MonoBehaviour {
 	void FixedUpdate () {
 	    if (checkForWin(SCORE.left) || checkForWin(SCORE.right))
         {
-            reset();
-            //add some UX animation jazz
+            gameOver.SetActive(true);
+            resetGameObjects();
+
+            float restart_btn = Input.GetAxis("Restart");
+            int restart = Mathf.CeilToInt(restart_btn);
+            if (restart > 0)
+            {
+                leftScoreUI.text = "0";
+                rightScoreUI.text = "0";
+                gameOver.SetActive(false);
+            }
+            //TODO: add some UX animation jazz
         }
 	}
 
@@ -45,16 +57,13 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    void reset()
+    public void resetGameObjects()
     {
         for (int i = 0; i < gameObjects.Length; i ++)
         {
             gameObjects[i].GetComponent<Rigidbody2D>().Sleep();
             gameObjects[i].GetComponent<Rigidbody2D>().MovePosition(gameObjects_initPos[i]);
         }
-
-        leftScoreUI.text = "0";
-        rightScoreUI.text = "0";
     }
 
     bool checkForWin(SCORE score)
