@@ -4,6 +4,7 @@ using System.Collections;
 
 public class BallController : MonoBehaviour {
 
+    public float minSpeed;
     public float initSpeed;
     public int initXDirection;
     public Text leftScoreUI;
@@ -43,40 +44,50 @@ public class BallController : MonoBehaviour {
         {
             rb2d.WakeUp();
             rb2d.AddForce(new Vector2(initXDirection, 0) * initSpeed);
-        } else if (bounceOffWall())
-        {
-            int dirX = (int)prevDir.x;
-            int dirY = (int)prevDir.y;
-            switch (whichWall)
-            {
-                case "TopWall":
-                    dirY = -1;
-                    break;
-                case "BotWall":
-                    dirY = 1;
-                    break;
-                case "RightWall":
-                    dirX = -1;
-                    break;
-                case "LeftWall":
-                    dirX = 1;
-                    break;
-                default:
-                    dirY = 0;
-                    dirX = 0;
-                    break;
+        } else {
+
+            if (bounceOffWall()) {
+                int dirX = (int)prevDir.x;
+                int dirY = (int)prevDir.y;
+                switch (whichWall)
+                {
+                    case "TopWall":
+                        dirY = -1;
+                        break;
+                    case "BotWall":
+                        dirY = 1;
+                        break;
+                    case "RightWall":
+                        dirX = -1;
+                        break;
+                    case "LeftWall":
+                        dirX = 1;
+                        break;
+                    default:
+                        dirY = 0;
+                        dirX = 0;
+                        break;
+                }
+
+                float speedX;
+                speedX = rb2d.position.x > minX_paddleConstraint && rb2d.position.x < maxX_paddleConstraint ? 0 : 30;
+                //rb2d.Sleep();
+                rb2d.AddForce(new Vector2(speedX * dirX, 30 * dirY));
+                /*float velX = rb2d.velocity.x;
+                float velY = rb2d.velocity.y;
+                rb2d.velocity.Set(prevVel.x * dirX, prevVel.y * dirY);
+                print("velX : " + rb2d.velocity.x);
+                print("velY : " + rb2d.velocity.y);*/
             }
 
-            float velX;
-            velX = rb2d.position.x > minX_paddleConstraint && rb2d.position.x < maxX_paddleConstraint ? 0 : 30;
-            //rb2d.Sleep();
-            rb2d.AddForce(new Vector2(velX * dirX, 30 * dirY));
-            /*float velX = rb2d.velocity.x;
-            float velY = rb2d.velocity.y;
-            rb2d.velocity.Set(prevVel.x * dirX, prevVel.y * dirY);
-            print("velX : " + rb2d.velocity.x);
-            print("velY : " + rb2d.velocity.y);*/
-
+            float velX = rb2d.velocity.x;
+            int velXMag = (int)rb2d.velocity.normalized.x;
+            if (Mathf.Abs(velX) < minSpeed)
+            {
+                if (velXMag < 0) { velX--; }
+                else if (velXMag > 0) { velX++; }
+            }
+            rb2d.velocity = new Vector2(velX, rb2d.velocity.y);
         }
 
         prevDir = rb2d.velocity.normalized;
