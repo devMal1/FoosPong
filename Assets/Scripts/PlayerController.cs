@@ -3,7 +3,8 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-    public float speed;
+    public float speedX;
+    public float speedY;
     public GameObject leftConstraint;
     public GameObject rightConstraint;
 
@@ -27,9 +28,7 @@ public class PlayerController : MonoBehaviour {
         {
             rb2d.WakeUp();
 
-            Vector2 movement = new Vector2(movementPush, movementVertical);
-
-            rb2d.AddForce(movement * speed * Time.deltaTime);
+            rb2d.AddForce(new Vector2(movementPush * speedX, movementVertical * speedY) * Time.deltaTime);
         }
 
     }
