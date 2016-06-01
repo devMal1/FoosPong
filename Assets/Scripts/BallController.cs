@@ -9,26 +9,28 @@ public class BallController : MonoBehaviour {
     public Text leftScoreUI;
     public Text rightScoreUI;
     public GameObject walls_dir;
+    public GameObject paddle_constraints;
 
     private Rigidbody2D rb2d;
     private BoxCollider2D[] walls;
     private bool start;
-    private int leftScore;
-    private int rightScore;
-    private enum SCORE { right, left, both }
     private Vector2 prevVel;
     private Vector2 prevDir;
     private string whichWall;
+    private float maxX_paddleConstraint;
+    private float minX_paddleConstraint;
 
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         walls = walls_dir.GetComponentsInChildren<BoxCollider2D>();
         start = true;
-        leftScore = 0;
-        rightScore = 0;
-        UpdateScore(SCORE.both);
+        leftScoreUI.text = "0";
+        rightScoreUI.text = "0";
         whichWall = null;
+        Transform[] pc = paddle_constraints.GetComponentsInChildren<Transform>();
+        maxX_paddleConstraint = Mathf.Max(pc[1].position.x, pc[2].position.x);
+        minX_paddleConstraint = Mathf.Min(pc[1].position.x, pc[2].position.x);
     }
 	
 
@@ -65,13 +67,19 @@ public class BallController : MonoBehaviour {
                     break;
             }
 
-            rb2d.Sleep();
-            rb2d.AddForce(new Vector2(30 * dirX, 30 * dirY));
+            float velX;
+            velX = rb2d.position.x > minX_paddleConstraint && rb2d.position.x < maxX_paddleConstraint ? 0 : 30;
+            //rb2d.Sleep();
+            rb2d.AddForce(new Vector2(velX * dirX, 30 * dirY));
+            /*float velX = rb2d.velocity.x;
+            float velY = rb2d.velocity.y;
+            rb2d.velocity.Set(prevVel.x * dirX, prevVel.y * dirY);
+            print("velX : " + rb2d.velocity.x);
+            print("velY : " + rb2d.velocity.y);*/
 
         }
 
-        prevVel = rb2d.velocity;
-        prevDir = new Vector2(getDir(prevVel.x), getDir(prevVel.y));
+        prevDir = rb2d.velocity.normalized;
 
     }
 
@@ -79,34 +87,21 @@ public class BallController : MonoBehaviour {
     {
         GameObject otherObject = other.gameObject;
         bool isGoal = true;
+        int points;
 
         if (otherObject.CompareTag("RightGoal"))
         {
-            leftScore++;
-            UpdateScore(SCORE.left);
+            points = int.TryParse(leftScoreUI.text, out points) ? points : -1;
+            points++;
+            leftScoreUI.text = points.ToString();
         } else if (otherObject.CompareTag("LeftGoal"))
         {
-            rightScore++;
-            UpdateScore(SCORE.right);
+            points = int.TryParse(rightScoreUI.text, out points) ? points : -1;
+            points++;
+            rightScoreUI.text = points.ToString();
         } else { isGoal = false; }
 
         if (isGoal) { reset(); }
-    }
-
-    void UpdateScore(SCORE score)
-    {
-        if (score == SCORE.right)
-        {
-            rightScoreUI.text = rightScore.ToString();
-        }
-        else if (score == SCORE.left)
-        {
-            leftScoreUI.text = leftScore.ToString();
-        } else
-        {
-            rightScoreUI.text = rightScore.ToString();
-            leftScoreUI.text = leftScore.ToString();
-        }
     }
 
     bool bounceOffWall()
@@ -122,14 +117,10 @@ public class BallController : MonoBehaviour {
         return false;
     }
 
-    int getDir(float vel)
-    {
-        return (int)(vel / Mathf.Abs(vel == 0 ? 0 : vel));
-    }
-
     void reset()
     {
         rb2d.Sleep();
+        rb2d.velocity.Set(0F, 0F);
         rb2d.position = new Vector2(0, 0);
     }
 

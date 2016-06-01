@@ -32,9 +32,7 @@ public class GameController : MonoBehaviour {
             gameOver.SetActive(true);
             resetGameObjects();
 
-            float restart_btn = Input.GetAxis("Restart");
-            int restart = Mathf.CeilToInt(restart_btn);
-            if (restart > 0)
+            if (restartScene())
             {
                 leftScoreUI.text = "0";
                 rightScoreUI.text = "0";
