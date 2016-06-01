@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour {
         float movementPush = Input.GetAxis("Horizontal");
 
         if (rb2d.IsTouching(leftConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush < 0 ? resetMovementPush() : movementPush; }
-        if (rb2d.IsTouching(rightConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush > 0 ? resetMovementPush() : movementPush; }
+        else if (rb2d.IsTouching(rightConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush > 0 ? resetMovementPush() : movementPush; }
 
         if (movementVertical == 0 && movementPush == 0) { rb2d.Sleep(); }
         else
@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour {
     float resetMovementPush()
     {
         rb2d.Sleep();
+        rb2d.position = rb2d.position + new Vector2(0, 0);
         return 0;
     }
 
