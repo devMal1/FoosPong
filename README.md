@@ -10,11 +10,12 @@ The first team to score the number of goals equal to the max point is the victor
 
 ## Controls
 ##### Keyboard
-- *wasd* moves the player's paddle
-- *space* resets/restarts the game
+- *wasd*        >> moves the player's paddle
+- *space*       >> resets/restarts the game
+
 ##### Controller (assuming PS4 controller)
-- *left analog* moves the player's paddle
-- *L1* resets/restarts the game
+- *left analog*  >> moves the player's paddle
+- *L1*           >> resets/restarts the game
 
 ## The build (setup)
 Through Unity, the game is built as a windows application (.exe). _In its current
