@@ -3,73 +3,41 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-    public float speed;
-    public float jolt;
+    public float speedX;
+    public float speedY;
+    public GameObject leftConstraint;
+    public GameObject rightConstraint;
 
     private Rigidbody2D rb2d;
-    private bool pushing;
-    public float maxX;
-    private float restingX;
 
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
-        pushing = false;
-        //maxX = 10f;
-        restingX = transform.position.x;
 	}
 
-    void Update()
+    void FixedUpdate()
     {
         float movementVertical = Input.GetAxis("Vertical");
+        float movementPush = Input.GetAxis("Horizontal");
 
-        Vector2 movement = new Vector2(0, movementVertical);
+        if (rb2d.IsTouching(leftConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush < 0 ? resetMovementPush() : movementPush; }
+        else if (rb2d.IsTouching(rightConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush > 0 ? resetMovementPush() : movementPush; }
 
-        transform.Translate(movement * speed * Time.deltaTime);
+        if (movementVertical == 0 && movementPush == 0) { rb2d.Sleep(); }
+        else
+        {
+            rb2d.WakeUp();
+
+            rb2d.AddForce(new Vector2(movementPush * speedX, movementVertical * speedY) * Time.deltaTime);
+        }
+
     }
 
-    /*void FixedUpdate()
+    float resetMovementPush()
     {
-        float movementVertical = Input.GetAxis("Vertical");
-        float movementPush = CheckPush();
-
-        Vector2 movement = new Vector2(movementPush, movementVertical);
-
-        rb2d.AddForce(movement * speed * Time.deltaTime);
-    }
-
-    void Update()
-    {
-        if (transform.position.x > maxX)
-        {
-            pushing = false;
-            transform.position.Set(maxX, transform.position.y, transform.position.z);
-        } else if (transform.position.x < restingX)
-        { 
-            transform.position.Set(restingX, transform.position.y, transform.position.z);
-        }
-    }*/
-
-    float CheckPush()
-    {
-        float movementPush = Input.GetAxis("Jump");
-        if (movementPush <= 0 && !pushing)
-        {
-            pushing = false;
-            return 0f;
-        } else if (movementPush > 0 && !pushing)
-        {
-            pushing = false;
-            return jolt * -1;
-        } else if (movementPush <= 0 && pushing)
-        {
-            pushing = true;
-            return jolt;
-        } else
-        {
-            pushing = false;
-            return jolt * -1;
-        }
+        rb2d.Sleep();
+        rb2d.position = rb2d.position + new Vector2(0, 0);
+        return 0;
     }
 
 }
