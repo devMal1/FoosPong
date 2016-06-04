@@ -20,8 +20,8 @@ The first team to score the number of goals equal to the max point is the victor
 ## The build (setup)
 Through Unity, the game is built as a windows application (.exe). _In its current
 pre-alpha build, it is recommended to check the *windowed* box to make it easier
-to exit the game when finished playing._ A zipped file of FoosPong can be found
-[here]().
+to exit the game when finished playing._ Info and a link to the zipped file for 
+FoosPong can be found [here](https://foospong.wordpress.com).
 
 
 # Continuous Development
