@@ -20,6 +20,8 @@ public class BallController : MonoBehaviour {
     private string whichWall;
     private float maxX_paddleConstraint;
     private float minX_paddleConstraint;
+    private float maxX_paddleConstraint2;
+    private float minX_paddleConstraint2;
 
     // Use this for initialization
     void Start () {
@@ -32,6 +34,8 @@ public class BallController : MonoBehaviour {
         Transform[] pc = paddle_constraints.GetComponentsInChildren<Transform>();
         maxX_paddleConstraint = Mathf.Max(pc[1].position.x, pc[2].position.x);
         minX_paddleConstraint = Mathf.Min(pc[1].position.x, pc[2].position.x);
+        maxX_paddleConstraint2 = Mathf.Max(pc[3].position.x, pc[4].position.x);
+        minX_paddleConstraint2 = Mathf.Min(pc[3].position.x, pc[4].position.x);
     }
 	
 
@@ -70,24 +74,21 @@ public class BallController : MonoBehaviour {
                 }
 
                 float speedX;
-                speedX = rb2d.position.x > minX_paddleConstraint && rb2d.position.x < maxX_paddleConstraint ? 0 : 30;
-                //rb2d.Sleep();
+                speedX = inPlayersReach() ? 0 : initSpeed;
                 rb2d.AddForce(new Vector2(speedX * dirX, 30 * dirY));
-                /*float velX = rb2d.velocity.x;
-                float velY = rb2d.velocity.y;
-                rb2d.velocity.Set(prevVel.x * dirX, prevVel.y * dirY);
-                print("velX : " + rb2d.velocity.x);
-                print("velY : " + rb2d.velocity.y);*/
-            }
+            } else {
+                if (!inPlayersReach()) {
+                    float velX = rb2d.velocity.x;
+                    if (Mathf.Abs(velX) < minSpeed)
+                    {
+                        float velXMag = rb2d.velocity.normalized.x;
+                        velX += (norm(velXMag)*0.25f);
 
-            float velX = rb2d.velocity.x;
-            int velXMag = (int)rb2d.velocity.normalized.x;
-            if (Mathf.Abs(velX) < minSpeed)
-            {
-                if (velXMag < 0) { velX--; }
-                else if (velXMag > 0) { velX++; }
+                        rb2d.AddForce(new Vector2(velX, 0));
+
+                    }
+                }
             }
-            rb2d.velocity = new Vector2(velX, rb2d.velocity.y);
         }
 
         prevDir = rb2d.velocity.normalized;
@@ -128,11 +129,24 @@ public class BallController : MonoBehaviour {
         return false;
     }
 
+    bool inPlayersReach()
+    {
+        return (rb2d.position.x > minX_paddleConstraint &&  rb2d.position.x < maxX_paddleConstraint) ||
+                (rb2d.position.x > minX_paddleConstraint2 && rb2d.position.x < maxX_paddleConstraint2) ? true : false;
+    }
+
     void reset()
     {
         rb2d.Sleep();
-        rb2d.velocity.Set(0F, 0F);
+        rb2d.velocity.Set(0f, 0f);
         rb2d.position = new Vector2(0, 0);
+    }
+
+    int norm(float value)
+    {
+        if (value < 0) { return -1; }
+        else if (value > 0) { return 1; }
+        else { return 0; }
     }
 
 }
