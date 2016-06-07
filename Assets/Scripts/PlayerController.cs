@@ -22,14 +22,14 @@ public class PlayerController : MonoBehaviour {
         float movementVertical = Input.GetAxis(vertical_axis);
         float movementPush = Input.GetAxis(horizontal_axis);
 
-        if (rb2d.IsTouching(leftConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush < 0 ? resetMovementPush() : movementPush; }
-        else if (rb2d.IsTouching(rightConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush > 0 ? resetMovementPush() : movementPush; }
+        if (rb2d.IsTouching(leftConstraint.GetComponent<BoxCollider2D>())) { movementPush = rb2d.velocity.normalized.x < 0 || movementPush < 0 ? resetMovementPush() : movementPush; }
+        else if (rb2d.IsTouching(rightConstraint.GetComponent<BoxCollider2D>())) { movementPush = rb2d.velocity.normalized.x > 0 || movementPush > 0 ? resetMovementPush() : movementPush; }
 
-        if (movementVertical == 0 && movementPush == 0) { rb2d.Sleep(); }
-        else
-        {
+        if (movementVertical == 0 && movementPush == 0) {
+            rb2d.velocity = new Vector2(0, 0);
+            rb2d.Sleep();
+        } else {
             rb2d.WakeUp();
-
             rb2d.AddForce(new Vector2(movementPush * speedX, movementVertical * speedY) * Time.deltaTime);
         }
 
@@ -37,8 +37,8 @@ public class PlayerController : MonoBehaviour {
 
     float resetMovementPush()
     {
-        rb2d.Sleep();
         rb2d.position = rb2d.position + new Vector2(0, 0);
+        rb2d.velocity = new Vector2(0, rb2d.velocity.y);
         return 0;
     }
 
