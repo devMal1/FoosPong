@@ -5,15 +5,17 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
     public GameObject p_paddle;
+    public GameObject p_paddle2;
     public GameObject ai_paddle;
+    public GameObject ai_paddle2;
     public GameObject ball;
     public GameObject gameOver;
     public Text leftScoreUI;
     public Text rightScoreUI;
     public int points2Win;
 
-    private GameObject[] gameObjects = new GameObject[3];
-    private Vector2[] gameObjects_initPos = new Vector2[3];
+    private GameObject[] gameObjects = new GameObject[5];
+    private Vector2[] gameObjects_initPos = new Vector2[5];
     private string points2Win_string;
     private enum SCORE { left, right };
 
@@ -48,8 +50,10 @@ public class GameController : MonoBehaviour {
     {
         //something wrong with 
         gameObjects[0] = p_paddle;
-        gameObjects[1] = ai_paddle;
-        gameObjects[2] = ball;
+        gameObjects[1] = p_paddle2;
+        gameObjects[2] = ai_paddle;
+        gameObjects[3] = ai_paddle2;
+        gameObjects[4] = ball;
 
         for (int i = 0; i < gameObjects.Length; i ++)
         {

@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour {
 
     public float speedX;
     public float speedY;
+    public string horizontal_axis;
+    public string vertical_axis;
     public GameObject leftConstraint;
     public GameObject rightConstraint;
 
@@ -17,8 +19,8 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        float movementVertical = Input.GetAxis("Vertical");
-        float movementPush = Input.GetAxis("Horizontal");
+        float movementVertical = Input.GetAxis(vertical_axis);
+        float movementPush = Input.GetAxis(horizontal_axis);
 
         if (rb2d.IsTouching(leftConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush < 0 ? resetMovementPush() : movementPush; }
         else if (rb2d.IsTouching(rightConstraint.GetComponent<BoxCollider2D>())) { movementPush = movementPush > 0 ? resetMovementPush() : movementPush; }
