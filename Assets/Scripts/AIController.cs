@@ -31,7 +31,7 @@ public class AIController : MonoBehaviour {
             movementVertical *= -1;
         } else if (rb2d.IsTouching(ball_rb2d.GetComponent<CircleCollider2D>()) && !delaying) {
             movementVertical *= -1;
-            delay(5);
+            delay(1);
             ball_rb2d.velocity = ball_rb2d.velocity * -1;
         } else { movementVertical = movementVertical + 0; }
 
