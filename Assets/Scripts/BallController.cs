@@ -78,11 +78,12 @@ public class BallController : MonoBehaviour {
                 rb2d.AddForce(new Vector2(speedX * dirX, 30 * dirY));
             } else {
                 if (!inPlayersReach()) {
+                    print("not in player's reach");
                     float velX = rb2d.velocity.x;
                     if (Mathf.Abs(velX) < minSpeed)
                     {
                         float velXMag = rb2d.velocity.normalized.x;
-                        velX += (norm(velXMag)*0.25f);
+                        velX += (norm(velXMag)*0.10f);
 
                         rb2d.AddForce(new Vector2(velX, 0));
 
