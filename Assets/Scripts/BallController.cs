@@ -6,7 +6,7 @@ public class BallController : MonoBehaviour {
 
     public float minSpeed;
     public float initSpeed;
-    public int initXDirection;
+    //public int initXDirection;
     public Text leftScoreUI;
     public Text rightScoreUI;
     public GameObject walls_dir;
@@ -22,6 +22,7 @@ public class BallController : MonoBehaviour {
     private float minX_paddleConstraint;
     private float maxX_paddleConstraint2;
     private float minX_paddleConstraint2;
+    private int initXDirection;
 
     // Use this for initialization
     void Start () {
@@ -42,12 +43,12 @@ public class BallController : MonoBehaviour {
     void FixedUpdate()
     {
         if (start) {
-            rb2d.AddForce(new Vector2(initXDirection, 0) * initSpeed);
+            rb2d.AddForce(new Vector2(randomDir(), randomDir()) * initSpeed);
             start = false;
         } else if (rb2d.IsSleeping())
         {
             rb2d.WakeUp();
-            rb2d.AddForce(new Vector2(initXDirection, 0) * initSpeed);
+            rb2d.AddForce(new Vector2(randomDir(), randomDir()) * initSpeed);
         } else {
 
             if (bounceOffWall()) {
@@ -147,6 +148,11 @@ public class BallController : MonoBehaviour {
         if (value < 0) { return -1; }
         else if (value > 0) { return 1; }
         else { return 0; }
+    }
+
+    int randomDir()
+    {
+        return Mathf.CeilToInt(Random.Range(0, 2)) == 0 ? -1 : 1;
     }
 
 }
