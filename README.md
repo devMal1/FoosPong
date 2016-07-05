@@ -1,6 +1,6 @@
 # FoosPong
 
-> pre-alpha: 0.0.0.34
+> alpha: 0.0.2.3
 
 ## The game
 FoosPong is a 2-D video game cross between foosball and Pong, developed using Unity.
@@ -10,17 +10,19 @@ The first team to score the number of goals equal to the max point is the victor
 
 ## Controls
 ##### Keyboard
-- *wasd*        >> moves the player's paddle
+- *wasd*        >> moves the player's left paddle (set)
+- *arrow keys*  >> moves the player's right paddle (set)
 - *space*       >> resets/restarts the game
 
 ##### Controller (assuming PS4 controller)
-- *left analog*  >> moves the player's paddle
+- *left analog*  >> moves the player's left paddle (set)
+- *right analog* >> moves the player's right paddle (set)
 - *L1*           >> resets/restarts the game
 
 ## The build (setup)
 Through Unity, the game is built as a windows application (.exe). _In its current
-pre-alpha build, it is recommended to check the *windowed* box to make it easier
-to exit the game when finished playing._ Info and a link to the zipped file for 
+alpha build, it is recommended to check the *windowed* box to make it easier
+to exit the game when finished playing._ Info and a link to the zipped file for
 FoosPong can be found [here](https://foospong.wordpress.com).
 
 
@@ -28,11 +30,9 @@ FoosPong can be found [here](https://foospong.wordpress.com).
 > The scope of improvements for future releases...
 
 ## Known issues
-- paddle's acceleration greatly slowed when up against a constraint
-- some weird instances the ball will fly past walls and out of the game
+- some inconsistencies with the physics between the ball and paddles
 
-## Added enhancements
+## Possible enhancements
 - add more scenes (game start screen, pause menu, etc.)
 - add sounds and animations for various events
-- add second row of paddles
 - change paddles to have flat edges on its corners
