@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D ball_rb2d;
     private bool delaying;
     private float? startDelay;
-
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
@@ -36,14 +35,13 @@ public class PlayerController : MonoBehaviour {
             rb2d.velocity = new Vector2(0, 0);
             rb2d.Sleep();
             if (rb2d.IsTouching(ball.GetComponent<CircleCollider2D>()) && !delaying) {
-                ball_rb2d.AddForce(new Vector2(100/*ball_prevDir.x*-1*/, 0)); //TODO: Figure out how to utilize the ball's direction!!
+                ball_rb2d.AddForce(new Vector2(100*-1, 0)); //TODO: Figure out how to utilize the ball's direction!!
                 delay(1);
             }
         } else {
             rb2d.WakeUp();
             rb2d.AddForce(new Vector2(movementPush * speedX, movementVertical * speedY) * Time.deltaTime);
         }
-
     }
 
     float resetMovementPush()
